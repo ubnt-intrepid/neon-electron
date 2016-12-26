@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <input type="button" value="Run" onclick="run()" />
+    <br />
+    <div id="output"></div>
+    <script type="text/javascript">
+    var hello = require('./native');
+
+    function run() {
+      var target = document.getElementById("output");
+      var message = hello.hello();
+      target.innerHTML = message;
+    }
+    </script>
+  </body>
+</html>

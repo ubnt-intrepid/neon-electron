@@ -1,0 +1,23 @@
+{
+  "name": "neon-electron",
+  "version": "0.0.1",
+  "description": "awesome Neon app",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ubnt-intrepid/neon-electron.git"
+  },
+  "author": "Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "neon-cli": "^0.1.7"
+  },
+  "scripts": {
+    "native": "./node_modules/.bin/neon build && ./node_modules/.bin/electron-rebuild native/index.node",
+    "electron": "./node_modules/.bin/electron ."
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.1",
+    "electron-rebuild": "^1.2.1"
+  }
+}

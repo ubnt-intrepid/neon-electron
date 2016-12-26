@@ -1,0 +1,12 @@
+[package]
+name = "neon-electron"
+version = "0.0.1"
+authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
+license = "MIT"
+
+[lib]
+name = "neon_electron"
+crate-type = ["dylib"]
+
+[dependencies]
+neon = "0.1"
