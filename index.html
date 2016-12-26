@@ -3,16 +3,23 @@
   <head>
   </head>
   <body>
-    <input type="button" value="Run" onclick="run()" />
-    <br />
-    <div id="output"></div>
+    <div>
+      <button onclick="run()">Run</button>
+    </div>
+    <div>
+      <canvas id="screen" width="300" height="200"></canvas>
+    </div>
     <script type="text/javascript">
-    var hello = require('./native');
+    var mandelbrot = require('./native');
 
     function run() {
-      var target = document.getElementById("output");
-      var message = hello.hello();
-      target.innerHTML = message;
+      var buffer = new Buffer(300 * 200 * 4);
+      mandelbrot.mandelbrot(buffer, 300, 200, 0.01, -2.0, -1.0);
+      var imageData = new ImageData(new Uint8ClampedArray(buffer), 300, 200);
+
+      document.getElementById('screen')
+        .getContext('2d')
+        .putImageData(imageData, 0, 0);
     }
     </script>
   </body>
