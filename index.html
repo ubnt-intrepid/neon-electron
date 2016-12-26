@@ -13,13 +13,11 @@
     var mandelbrot = require('./native');
 
     function run() {
-      var buffer = new Buffer(300 * 200 * 4);
+      var context = document.getElementById('screen').getContext('2d');
+      var imageData = context.createImageData(300, 200);
+      var buffer = new Buffer(imageData.data.buffer);
       mandelbrot.mandelbrot(buffer, 300, 200, 0.01, -2.0, -1.0);
-      var imageData = new ImageData(new Uint8ClampedArray(buffer), 300, 200);
-
-      document.getElementById('screen')
-        .getContext('2d')
-        .putImageData(imageData, 0, 0);
+      context.putImageData(imageData, 0, 0);
     }
     </script>
   </body>
