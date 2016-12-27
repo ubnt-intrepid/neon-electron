@@ -8,7 +8,6 @@ use neon::mem::Handle;
 use neon::js::{JsInteger, JsNumber, JsUndefined};
 use neon::js::binary::JsBuffer;
 
-#[allow(unused_variables)]
 fn run_mandelbrot(buffer: &mut [u8], width: i64, height: i64, pixel_size: f64, x0: f64, y0: f64) {
     for j in 0..height {
         for i in 0..width {
@@ -41,7 +40,6 @@ fn run_mandelbrot(buffer: &mut [u8], width: i64, height: i64, pixel_size: f64, x
     }
 }
 
-#[allow(unused_variables, unused_mut)]
 fn mandelbrot(call: Call) -> JsResult<JsUndefined> {
     let scope = call.scope;
 

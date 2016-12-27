@@ -1,11 +1,11 @@
 [package]
-name = "neon-electron"
+name = "mandelbrot"
 version = "0.0.1"
 authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
 license = "MIT"
 
 [lib]
-name = "neon_electron"
+name = "mandelbrot"
 crate-type = ["dylib"]
 
 [dependencies]
