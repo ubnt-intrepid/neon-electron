@@ -4,6 +4,9 @@
   "description": "A simple example of GUI application with Electron and Rust, by using neon.",
   "main": "main/main.js",
   "scripts": {
+    "build-main": "tsc --pretty -p ./main",
+    "build-renderer": "tsc --pretty -p ./renderer",
+    "build": "npm run build-main && npm run build-renderer",
     "start": "./node_modules/.bin/electron $(npm prefix)"
   },
   "keywords": [
@@ -14,10 +17,12 @@
   "author": "Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/electron": "^1.4.30",
     "electron-prebuilt": "1.2.1",
     "mandelbrot": "file:local_modules/mandelbrot"
   },
   "devDependencies": {
-    "electron-rebuild": "1.2.1"
+    "electron-rebuild": "1.2.1",
+    "typescript": "^2.1.4"
   }
 }

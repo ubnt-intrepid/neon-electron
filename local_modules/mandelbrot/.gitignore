@@ -1,4 +1,5 @@
 native/target
+native/Cargo.lock
 native/index.node
 **/*~
 **/node_modules

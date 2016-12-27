@@ -1,7 +1,5 @@
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const join = require('path').join;
+import {app, BrowserWindow} from 'electron';
+import {join} from 'path';
 
 app.on('window-all-closed', () => {
   if (process.platform != 'darwin') {

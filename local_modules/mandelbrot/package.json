@@ -9,6 +9,6 @@
     "neon-cli": "^0.1.7"
   },
   "scripts": {
-    "install": "neon build"
+    "install": "neon build && tsc --pretty -p ."
   }
 }
