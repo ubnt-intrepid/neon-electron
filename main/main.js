@@ -1,6 +1,7 @@
 const electron = require('electron');
 const app = electron.app;
-var BrowserWindow = electron.BrowserWindow;
+const BrowserWindow = electron.BrowserWindow;
+const join = require('path').join;
 
 app.on('window-all-closed', () => {
   if (process.platform != 'darwin') {
@@ -12,7 +13,7 @@ var mainWindow = null;
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({ width:800, height:600 });
-  mainWindow.loadURL('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + join(__dirname, '..', 'renderer', 'index.html'));
   mainWindow.on('closed', () => {
     mainWindow = null;
   });

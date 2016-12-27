@@ -1,4 +1,4 @@
-var mandelbrot = require('./native');
+const native_ = require('../native');
 
 var pixel_size = 0.01;
 var x0 = -2.0;
@@ -12,7 +12,7 @@ function run() {
 
   var imageData = context.createImageData(width, height);
   var buffer = new Buffer(imageData.data.buffer);
-  mandelbrot.mandelbrot(buffer, width, height, pixel_size, x0, y0);
+  native_.mandelbrot(buffer, width, height, pixel_size, x0, y0);
 
   context.putImageData(imageData, 0, 0);
 }

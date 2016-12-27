@@ -2,7 +2,7 @@
   "name": "neon-electron",
   "version": "0.0.1",
   "description": "awesome Neon app",
-  "main": "main.js",
+  "main": "main/main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/ubnt-intrepid/neon-electron.git"
