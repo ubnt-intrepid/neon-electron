@@ -10,6 +10,12 @@ by using [neon-bindings/neon](https://github.com/neon-bindings/neon).
 
 ## Usage
 
+switch Node's version
+
+```shell-session
+$ nvm use
+```
+
 install dependencies & build native module
 
 ```shell-session
