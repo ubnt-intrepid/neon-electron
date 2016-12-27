@@ -13,8 +13,8 @@
     "neon-cli": "^0.1.7"
   },
   "scripts": {
-    "native": "./node_modules/.bin/neon build && ./node_modules/.bin/electron-rebuild native/index.node",
-    "electron": "./node_modules/.bin/electron ."
+    "install": "./node_modules/.bin/neon build && ./node_modules/.bin/electron-rebuild native/index.node",
+    "start": "./node_modules/.bin/electron $(npm prefix)"
   },
   "devDependencies": {
     "electron-prebuilt": "1.2.1",

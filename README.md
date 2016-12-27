@@ -10,19 +10,16 @@ by using [neon-bindings/neon](https://github.com/neon-bindings/neon).
 
 ## Usage
 
-clone & install dependencies
+install dependencies & build native module
 
 ```shell-session
-$ git clone https://github.com/ubnt-intrepid/neon-electron.git
-$ cd neon-electron/
 $ npm install
 ```
 
-build native module & run as an electron application.
+run as an electron application.
 
 ```shell-session
-$ npm run native
-$ npm run electron
+$ npm start
 ```
 
 ## License
