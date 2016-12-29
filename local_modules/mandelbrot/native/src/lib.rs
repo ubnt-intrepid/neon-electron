@@ -2,75 +2,56 @@
 
 #[macro_use]
 extern crate neon;
+#[macro_use]
+extern crate itertools;
 
-use neon::vm::{Call, Lock, JsResult};
-use neon::mem::Handle;
-use neon::js::{JsInteger, JsNumber, JsUndefined};
+use neon::vm::{Call, Lock, JsResult, This, FunctionCall};
+use neon::js::{JsInteger, JsNumber, JsUndefined, Value};
 use neon::js::binary::JsBuffer;
+use itertools::Itertools;
+use std::cmp;
 
-fn run_mandelbrot(buffer: &mut [u8], width: i64, height: i64, pixel_size: f64, x0: f64, y0: f64) {
-    for j in 0..height {
-        for i in 0..width {
-            let (cr, ci) = (x0 + pixel_size * (i as f64), y0 + pixel_size * (j as f64));
+trait CheckArgument<'a> {
+    fn check_argument<V: Value>(&mut self, i: i32) -> JsResult<'a, V>;
+}
 
-            let (mut zr, mut zi) = (0.0, 0.0);
-
-            let mut k = 256;
-            for _k in 0..256 {
-                k = _k;
-                let zrzi = zr * zi;
-                let zr2 = zr * zr;
-                let zi2 = zi * zi;
-                zr = zr2 - zi2 + cr;
-                zi = zrzi + zrzi + ci;
-                if zi2 + zr2 >= 2.0 {
-                    break;
-                }
-            }
-            if k > 255 {
-                k = 255;
-            }
-
-            let idx: usize = (j * width + i) as usize;
-            buffer[4 * idx] = 255 - (k as u8);
-            buffer[4 * idx + 1] = 255 - (k as u8);
-            buffer[4 * idx + 2] = 255 - (k as u8);
-            buffer[4 * idx + 3] = 255;
-        }
+impl<'a, T: This> CheckArgument<'a> for FunctionCall<'a, T> {
+    fn check_argument<V: Value>(&mut self, i: i32) -> JsResult<'a, V> {
+        self.arguments.require(self.scope, i)?.check::<V>()
     }
 }
 
-fn mandelbrot(call: Call) -> JsResult<JsUndefined> {
-    let scope = call.scope;
+fn run_mandelbrot(buffer: &mut [u8], width: i64, height: i64, pixel_size: f64, x0: f64, y0: f64) {
+    iproduct!((0..width), (0..height)).foreach(|(i, j)| {
+        let cr = x0 + pixel_size * (i as f64);
+        let ci = y0 + pixel_size * (j as f64);
 
-    let mut buffer: Handle<JsBuffer> = call.arguments
-        .require(scope, 0)?
-        .check::<JsBuffer>()?;
+        let (mut zr, mut zi) = (0.0, 0.0);
+        let k = (0..256)
+            .take_while(|_| {
+                let (zrzi, zr2, zi2) = (zr * zi, zr * zr, zi * zi);
+                zr = zr2 - zi2 + cr;
+                zi = zrzi + zrzi + ci;
+                zi2 + zr2 < 2.0
+            })
+            .count();
+        let k = cmp::min(255, k) as u8;
 
-    let width: i64 = call.arguments
-        .require(scope, 1)?
-        .check::<JsInteger>()?
-        .value();
+        let idx = (j * width + i) as usize;
+        buffer[4 * idx] = 255 - k;
+        buffer[4 * idx + 1] = 255 - k;
+        buffer[4 * idx + 2] = 255 - k;
+        buffer[4 * idx + 3] = 255;
+    });
+}
 
-    let height: i64 = call.arguments
-        .require(scope, 2)?
-        .check::<JsInteger>()?
-        .value();
-
-    let pixel_size: f64 = call.arguments
-        .require(scope, 3)?
-        .check::<JsNumber>()?
-        .value();
-
-    let x0: f64 = call.arguments
-        .require(scope, 4)?
-        .check::<JsNumber>()?
-        .value();
-
-    let y0: f64 = call.arguments
-        .require(scope, 5)?
-        .check::<JsNumber>()?
-        .value();
+fn mandelbrot(mut call: Call) -> JsResult<JsUndefined> {
+    let mut buffer = call.check_argument::<JsBuffer>(0)?;
+    let width = call.check_argument::<JsInteger>(1)?.value();
+    let height = call.check_argument::<JsInteger>(2)?.value();
+    let pixel_size = call.check_argument::<JsNumber>(3)?.value();
+    let x0 = call.check_argument::<JsNumber>(4)?.value();
+    let y0 = call.check_argument::<JsNumber>(5)?.value();
 
     buffer.grab(|mut buf| run_mandelbrot(buf.as_mut_slice(), width, height, pixel_size, x0, y0));
 
