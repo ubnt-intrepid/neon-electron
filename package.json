@@ -19,9 +19,11 @@
   "dependencies": {
     "@types/electron": "^1.4.30",
     "electron-prebuilt": "1.2.1",
+    "jquery": "^3.1.1",
     "mandelbrot": "file:local_modules/mandelbrot"
   },
   "devDependencies": {
+    "@types/jquery": "^2.0.34",
     "electron-rebuild": "1.2.1",
     "typescript": "^2.1.4"
   }
