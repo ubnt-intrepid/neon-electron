@@ -1,17 +1,27 @@
 import {mandelbrot} from 'mandelbrot';
 
-var pixel_size = 0.01;
-var x0 = -2.0;
-var y0 = -1.0;
+class App {
+  pixel_size: number;
+  x0: number;
+  y0: number;
 
-function run() {
-  var canvas = <HTMLCanvasElement> document.getElementById('screen');
-  var context = canvas.getContext('2d');
-  var width = canvas.width;
-  var height = canvas.height;
+  constructor(pixel_size: number, x0: number, y0: number) {
+    this.pixel_size = pixel_size;
+    this.x0 = x0;
+    this.y0 = y0;
+  }
 
-  var imageData = context.createImageData(width, height);
-  mandelbrot(imageData, pixel_size, x0, y0);
+  render() {
+    var canvas = <HTMLCanvasElement> document.getElementById('screen');
+    var context = canvas.getContext('2d');
+    var width = canvas.width;
+    var height = canvas.height;
 
-  context.putImageData(imageData, 0, 0);
+    var imageData = context.createImageData(width, height);
+    mandelbrot(imageData, this.pixel_size, this.x0, this.y0);
+
+    context.putImageData(imageData, 0, 0);
+  }
 }
+
+var app = new App(0.01, -2.0, -1.0);
