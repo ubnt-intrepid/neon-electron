@@ -12,7 +12,9 @@
     "target": "es6",
     "sourceMap": true
   },
-  "files": [
-    "index.ts"
-  ]
+  "include": [
+    "*.ts",
+    "**/*.ts"
+  ],
+  "exclude": []
 }
