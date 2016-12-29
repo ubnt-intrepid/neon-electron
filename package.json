@@ -2,12 +2,18 @@
   "name": "neon-electron",
   "version": "0.0.1",
   "description": "A simple example of GUI application with Electron and Rust, by using neon.",
+  "private": "true",
   "main": "main/main.js",
   "scripts": {
-    "build-main": "tsc --pretty -p ./main",
-    "build-renderer": "tsc --pretty -p ./renderer",
-    "build": "npm run build-main && npm run build-renderer",
-    "start": "./node_modules/.bin/electron $(npm prefix)"
+    "compile-main": "tsc --pretty -p ./main",
+    "compile-renderer": "tsc --pretty -p ./renderer",
+    "compile": "npm run compile-main && npm run compile-renderer",
+
+    "sync": "mkdir -p $(npm prefix)/node_modules && for m in `ls --color=none $(npm prefix)/local_modules`; do rsync -C --filter=':- .gitignore' -rlpcgoD ./local_modules/$m/ $(npm prefix)/node_modules/$m/; done",
+    "start": "./node_modules/.bin/electron $(npm prefix)",
+
+    "preinstall": "npm run sync",
+    "postinstall": "npm run compile"
   },
   "keywords": [
     "electron",

@@ -2,6 +2,7 @@
   "name": "mandelbrot",
   "version": "0.0.1",
   "description": "",
+  "private": "true",
   "main": "index.js",
   "author": "Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>",
   "license": "MIT",
