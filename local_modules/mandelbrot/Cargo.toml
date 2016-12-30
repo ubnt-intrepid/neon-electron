@@ -1,6 +1,6 @@
 [package]
-name = "base"
-version = "0.1.0"
+name = "mandelbrot"
+version = "0.0.1"
 authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
 
 [dependencies]

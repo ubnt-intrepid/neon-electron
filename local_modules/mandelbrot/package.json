@@ -10,6 +10,12 @@
     "neon-cli": "^0.1.7"
   },
   "scripts": {
-    "postinstall": "neon build; $(npm prefix)/wasm/build.sh; tsc --pretty -p $(npm prefix)"
+    "build-native": "neon build",
+    "build-wasm": "$(npm prefix)/wasm/build.sh",
+    "compile": "tsc --pretty -p $(npm prefix)",
+    "postinstall": "npm run build-native && npm run build-wasm && npm run compile"
+  },
+  "devDependencies": {
+    "typescript": "^2.1.4"
   }
 }

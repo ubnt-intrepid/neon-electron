@@ -1,16 +1,15 @@
 [package]
-name = "mandelbrot"
+name = "native"
 version = "0.0.1"
 authors = ["Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>"]
 license = "MIT"
 
 [lib]
-name = "mandelbrot"
+name = "native"
 crate-type = ["dylib"]
 
 [dependencies]
 neon = "0.1"
-itertools = "*"
 
-[dependencies.base]
-path = "../base"
+[dependencies.mandelbrot]
+path = ".."

@@ -3,7 +3,7 @@
 #[macro_use]
 extern crate neon;
 
-extern crate base;
+extern crate mandelbrot;
 
 use neon::vm::{Call, Lock, JsResult, This, FunctionCall};
 use neon::js::{JsInteger, JsNumber, JsUndefined, Value};
@@ -27,7 +27,9 @@ fn mandelbrot(mut call: Call) -> JsResult<JsUndefined> {
     let x0 = call.check_argument::<JsNumber>(4)?.value();
     let y0 = call.check_argument::<JsNumber>(5)?.value();
 
-    buffer.grab(|mut buf| base::mandelbrot(buf.as_mut_slice(), width, height, pixel_size, x0, y0));
+    buffer.grab(|mut buf| {
+        mandelbrot::mandelbrot(buf.as_mut_slice(), width, height, pixel_size, x0, y0)
+    });
 
     Ok(JsUndefined::new())
 }

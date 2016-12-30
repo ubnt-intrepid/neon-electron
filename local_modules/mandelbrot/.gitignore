@@ -1,6 +1,7 @@
-native/target
-native/Cargo.lock
-native/index.node
+
+target/
+Cargo.lock
+
 **/*~
 **/node_modules
 **/.DS_Store
