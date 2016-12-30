@@ -24,4 +24,13 @@ class App {
   }
 }
 
-var app = new App(0.01, -2.0, -1.0);
+var app: App = null;
+
+window.onload = () => {
+  app = new App(0.01, -2.0, -1.0);
+
+  var renderBtn = <HTMLButtonElement> document.getElementById('render');
+  renderBtn.onclick = () => {
+    app.render();
+  };
+};
