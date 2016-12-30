@@ -4,12 +4,22 @@
 extern "C" {}
 
 extern crate base;
+use std::slice;
 
 #[no_mangle]
-pub fn mandelbrot(buffer: &mut [u8], width: i64, height: i64, pixel_size: f64, x0: f64, y0: f64) {
-    base::mandelbrot(buffer, width, height, pixel_size, x0, y0);
+pub fn mandelbrot(buffer: *mut u8,
+                  len: usize,
+                  width: f64,
+                  height: f64,
+                  pixel_size: f64,
+                  x0: f64,
+                  y0: f64) {
+    println!("mandlebrot({}, {}, {})", len, width, height);
+    let mut buffer = unsafe { slice::from_raw_parts_mut(buffer, len) };
+    base::mandelbrot(buffer, width as i64, height as i64, pixel_size, x0, y0);
 }
 
 fn main() {
+    println!("module loaded.");
     //* Intentionally left blank.
 }
