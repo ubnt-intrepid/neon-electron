@@ -4,14 +4,20 @@
   <meta charset="UTF-8" />
   <title>Mandelbrot</title>
   <script type="text/javascript" src="mandelbrot.js"></script>
-  <script type="text/javascript" src="../node_modules/mandelbrot/wasm/index.js"></script>
 </head>
 <body>
   <div>
+    <select id="backend">
+      <option value="native">Native</option>
+      <option value="asmjs">Asm.js</option>
+    </select>
+    <input type="text" size="6" id="pixel_size" value="0.005" />
+    <input type="text" size="6" id="x0" value="-2.0" />
+    <input type="text" size="6" id="y0" value="-1.0" />
     <button id="render">Render</button>
   </div>
   <div>
-    <canvas id="screen" width="300" height="200"></canvas>
+    <canvas id="screen" width="600" height="400"></canvas>
   </div>
 </body>
 </html>

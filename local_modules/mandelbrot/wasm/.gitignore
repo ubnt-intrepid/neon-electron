@@ -1,3 +1,4 @@
 target/
 Cargo.lock
 index.js
+!post.js
