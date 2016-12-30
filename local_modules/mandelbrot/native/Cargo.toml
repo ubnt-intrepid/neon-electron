@@ -11,3 +11,6 @@ crate-type = ["dylib"]
 [dependencies]
 neon = "0.1"
 itertools = "*"
+
+[dependencies.base]
+path = "../base"

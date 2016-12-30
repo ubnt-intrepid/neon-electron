@@ -1,4 +1,4 @@
-import {mandelbrot} from 'mandelbrot';
+import {Native, Wasm} from 'mandelbrot';
 
 class App {
   pixel_size: number;
@@ -18,7 +18,7 @@ class App {
     var height = canvas.height;
 
     var imageData = context.createImageData(width, height);
-    mandelbrot(imageData, this.pixel_size, this.x0, this.y0);
+    Wasm.mandelbrot(imageData, this.pixel_size, this.x0, this.y0);
 
     context.putImageData(imageData, 0, 0);
   }
