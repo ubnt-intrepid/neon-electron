@@ -3,14 +3,12 @@
   "version": "0.0.1",
   "description": "A simple example of GUI application with Electron and Rust, by using neon.",
   "private": "true",
-  "main": "main/main.js",
+  "main": "src/launcher.js",
   "scripts": {
-    "compile-main": "tsc --pretty -p ./main",
-    "compile-renderer": "tsc --pretty -p ./renderer",
-    "compile": "npm run compile-main && npm run compile-renderer",
+    "compile": "tsc --pretty -p $(npm prefix)",
     "local": "for m in `ls --color=none $(npm prefix)/local_modules`; do npm install $m; done",
-    "start": "./node_modules/.bin/electron $(npm prefix)",
-    "postinstall": "npm run local && npm run compile"
+    "postinstall": "npm run local && npm run compile",
+    "start": "electron $(npm prefix)"
   },
   "keywords": [
     "electron",
@@ -22,11 +20,9 @@
   "dependencies": {
     "@types/electron": "^1.4.30",
     "electron-prebuilt": "1.2.1",
-    "jquery": "^3.1.1",
     "mandelbrot": "file:local_modules/mandelbrot"
   },
   "devDependencies": {
-    "@types/jquery": "^2.0.34",
     "electron-rebuild": "1.2.1",
     "typescript": "^2.1.4"
   }
