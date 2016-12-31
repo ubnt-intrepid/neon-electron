@@ -1,9 +1,12 @@
-import {Native, Wasm} from 'mandelbrot';
+import {Native, AsmJs} from 'mandelbrot';
 
 enum BackendType {
   Native, // use native module
   AsmJs,  // use Asm.js
 }
+
+type Backend = Native.Backend | AsmJs.Backend;
+
 
 class Settings {
   backend: HTMLSelectElement;
@@ -47,15 +50,18 @@ class App {
   }
 
   render() {
-    let state = this.settings.getValue();
-    switch (state[0]) {
-      case BackendType.Native:
-        Native.mandelbrot(this.canvas, state[1], state[2], state[3]);
-        break;
-      case BackendType.AsmJs:
-        Wasm.mandelbrot(this.canvas, state[1], state[2], state[3]);
-        break;
-    }
+    let settings = this.settings.getValue();
+    let backend: Backend = (() => {
+      switch (settings[0]) {
+        case BackendType.Native:
+          console.log("[debug] use Native.Backend");
+          return new Native.Backend(this.canvas);
+        case BackendType.AsmJs:
+          console.log("[debug] use AsmJs.Backend");
+          return new AsmJs.Backend(this.canvas);
+      }
+    })();
+    backend.call(settings[1], settings[2], settings[3]);
   }
 }
 

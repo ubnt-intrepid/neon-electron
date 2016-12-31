@@ -1,42 +1,63 @@
 export module Native {
   export const addon = require('./native');
 
-  export function mandelbrot(canvas: HTMLCanvasElement, pixel_size: number, x0: number, y0: number): void {
-    console.log("[debug] call Native.mandelbrot()");
+  export class Backend {
+    readonly canvas: HTMLCanvasElement;
+    readonly context: CanvasRenderingContext2D;
+    readonly image: ImageData;
 
-    var context = canvas.getContext('2d');
+    constructor(canvas: HTMLCanvasElement) {
+      this.canvas = canvas;
+      this.context = canvas.getContext('2d');
+      this.image = this.context.getImageData(0, 0, canvas.width, canvas.height);
+    }
 
-    var image = context.getImageData(0, 0, canvas.width, canvas.height);
+    call(pixel_size: number, x0: number, y0: number) {
+      let buffer = Buffer.from(this.image.data.buffer);
 
-    addon.mandelbrot(Buffer.from(image.data.buffer), canvas.width, canvas.height, pixel_size, x0, y0);
+      addon.mandelbrot(buffer, this.canvas.width, this.canvas.height, pixel_size, x0, y0);
 
-    context.putImageData(image, 0, 0);
+      this.context.putImageData(this.image, 0, 0);
+    }
   }
 }
 
-export module Wasm {
+export module AsmJs {
   export const Module = require('./wasm');
 
-  const _mandelbrot = Module.cwrap('mandelbrot', undefined,
-      ['number', 'number', 'number', 'number', 'number', 'number', 'number']);
+  const _mandelbrot =
+    Module.cwrap('mandelbrot',
+                 undefined,
+                 ['number', 'number', 'number', 'number', 'number', 'number', 'number']);
 
-  export function mandelbrot(canvas: HTMLCanvasElement, pixel_size: number, x0: number, y0: number): void {
-    console.log("[debug] call Wasm.mandelbrot()");
+  export class Backend {
+    readonly canvas: HTMLCanvasElement;
+    readonly context: CanvasRenderingContext2D;
+    readonly image: ImageData;
+    readonly byteOffset: number;
 
-    var context = canvas.getContext('2d');
-    var image = context.getImageData(0, 0, canvas.width, canvas.height);
+    constructor(canvas: HTMLCanvasElement) {
+      this.canvas = canvas;
+      this.context = canvas.getContext('2d');
+      this.image = this.context.getImageData(0, 0, canvas.width, canvas.height);
+    }
 
-    let n_bytes = canvas.width * canvas.height * 4;
-    // Create a heat to interact with Emscripten's function
-    let ptr:number = Module._malloc(n_bytes);
+    call(pixel_size: number, x0: number, y0: number) {
+      // Create a heap to interact with Emscripten's function
+      let buffer = ((() => {
+        let n_bytes = this.image.data.buffer.byteLength;
+        let ptr = Module._malloc(n_bytes);
+        return new Uint8ClampedArray(Module.HEAPU8.buffer, ptr, n_bytes);
+      })());
 
-    // Call function
-    _mandelbrot(ptr, n_bytes, canvas.width, canvas.height, pixel_size, x0, y0);
+      // Call function
+      _mandelbrot(buffer.byteOffset, buffer.length, this.canvas.width, this.canvas.height, pixel_size, x0, y0);
 
-    image.data.set(new Uint8ClampedArray(Module.HEAPU8.buffer, ptr, n_bytes));
-    context.putImageData(image, 0, 0);
+      this.image.data.set(buffer);
+      this.context.putImageData(this.image, 0, 0);
 
-    // Free memory.
-    Module._free(ptr);
+      // Free memory.
+      Module._free(buffer.byteOffset);
+    }
   }
 }
