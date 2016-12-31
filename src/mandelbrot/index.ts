@@ -1,12 +1,4 @@
-import {Native, AsmJs} from 'mandelbrot';
-
-enum BackendType {
-  Native, // use native module
-  AsmJs,  // use Asm.js
-}
-
-type Backend = Native.Backend | AsmJs.Backend;
-
+import {BackendType, MandelbrotRenderer} from 'mandelbrot';
 
 class Settings {
   backend: HTMLSelectElement;
@@ -38,30 +30,23 @@ class Settings {
 }
 
 class App {
-  renderBtn: HTMLButtonElement;
-  canvas: HTMLCanvasElement;
   settings: Settings;
+  renderBtn: HTMLButtonElement;
+  renderer: MandelbrotRenderer;
 
   constructor() {
     this.settings = new Settings();
-    this.canvas = <HTMLCanvasElement> document.getElementById('screen');
     this.renderBtn = <HTMLButtonElement> document.getElementById('render');
     this.renderBtn.onclick = () => this.render();
+
+    let canvas = <HTMLCanvasElement> document.getElementById('screen');
+    this.renderer = new MandelbrotRenderer(canvas);
   }
 
   render() {
     let settings = this.settings.getValue();
-    let backend: Backend = (() => {
-      switch (settings[0]) {
-        case BackendType.Native:
-          console.log("[debug] use Native.Backend");
-          return new Native.Backend(this.canvas);
-        case BackendType.AsmJs:
-          console.log("[debug] use AsmJs.Backend");
-          return new AsmJs.Backend(this.canvas);
-      }
-    })();
-    backend.call(settings[1], settings[2], settings[3]);
+    this.renderer.switchBackend(settings[0]);
+    this.renderer.apply(settings[1], settings[2], settings[3]);
   }
 }
 
