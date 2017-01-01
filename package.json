@@ -4,12 +4,6 @@
   "description": "A simple example of GUI application with Electron and Rust, by using neon.",
   "private": "true",
   "main": "src/launcher.js",
-  "scripts": {
-    "compile": "tsc --pretty -p $(npm prefix)",
-    "local": "for m in `ls --color=none $(npm prefix)/local_modules`; do npm install $m; done",
-    "postinstall": "npm run local && npm run compile",
-    "start": "electron $(npm prefix)"
-  },
   "keywords": [
     "electron",
     "Rust",
@@ -18,12 +12,21 @@
   "author": "Yusuke Sasaki <yusuke.sasaki.nuem@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@types/electron": "^1.4.30",
     "electron-prebuilt": "1.2.1",
     "mandelbrot": "file:local_modules/mandelbrot"
   },
   "devDependencies": {
+    "@types/electron": "^1.4.30",
+    "@types/es6-promise": "0.0.32",
     "electron-rebuild": "1.2.1",
+    "tslint": "^4.2.0",
     "typescript": "^2.1.4"
+  },
+  "scripts": {
+    "compile": "tsc --pretty -p $(npm prefix)",
+    "local": "for m in `ls --color=none $(npm prefix)/local_modules`; do npm install $m; done",
+    "postinstall": "npm run local && npm run compile",
+    "lint": "tslint --project $(npm prefix)/tsconfig.json || true",
+    "start": "electron $(npm prefix)"
   }
 }
